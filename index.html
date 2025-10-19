@@ -26,7 +26,7 @@
             width: 100%;
             height: 100%;
             z-index: 0;
-            opacity: 0.3;
+            pointer-events: none;
         }
 
         .cursor {
@@ -96,6 +96,42 @@
         }
 
         .contact-nav:hover::before {
+            left: 0;
+        }
+
+        .lang-toggle {
+            font-size: 0.85rem;
+            color: #000;
+            background: none;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: color 0.4s;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            font-weight: 500;
+            font-family: inherit;
+        }
+
+        .lang-toggle::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: -1;
+        }
+
+        .lang-toggle:hover {
+            color: #fff;
+        }
+
+        .lang-toggle:hover::before {
             left: 0;
         }
 
@@ -440,14 +476,8 @@
                 border-right: none;
             }
 
-            .service-item::after {
-                right: 1.5rem;
-                bottom: 2.5rem;
-                font-size: 1.5rem;
-            }
-
             .service-item:hover {
-                padding-left: 2rem;
+                transform: translateX(5px);
             }
 
             .service-name {
@@ -542,37 +572,40 @@
 
     <nav>
         <div class="logo">Mehdi Boukerdoune</div>
-        <a href="#contact" class="contact-nav">Contact</a>
+        <div style="display: flex; align-items: center; gap: 2rem;">
+            <button id="langToggle" class="lang-toggle">FR</button>
+            <a href="#contact" class="contact-nav">Contact</a>
+        </div>
     </nav>
 
     <section class="hero">
-        <h1>Cloud & Security<br><strong>Consultant</strong></h1>
-        <p class="hero-subtitle">Designing secure, scalable infrastructure for modern enterprises</p>
-        <div class="scroll-hint">Scroll</div>
+        <h1 data-en="Cloud & Security<br><strong>Consultant</strong>" data-fr="Consultant Cloud<br>& <strong>Sécurité</strong>">Cloud & Security<br><strong>Consultant</strong></h1>
+        <p class="hero-subtitle" data-en="Designing secure, scalable infrastructure for modern enterprises" data-fr="Conception d'infrastructures sécurisées et évolutives pour les entreprises modernes">Designing secure, scalable infrastructure for modern enterprises</p>
+        <div class="scroll-hint" data-en="Scroll" data-fr="Défiler">Scroll</div>
     </section>
 
     <section class="services">
         <div class="services-content">
-            <div class="section-label">What I Do</div>
-            <h2 class="services-title">Services</h2>
+            <div class="section-label" data-en="What I Do" data-fr="Ce Que Je Fais">What I Do</div>
+            <h2 class="services-title" data-en="Services" data-fr="Services">Services</h2>
             <div class="services-grid">
                 <div class="service-item">
-                    <div class="service-name">Cloud Architecture & Infrastructure</div>
+                    <div class="service-name" data-en="Cloud Architecture & Infrastructure" data-fr="Architecture Cloud & Infrastructure">Cloud Architecture & Infrastructure</div>
                 </div>
                 <div class="service-item">
-                    <div class="service-name">Security Assessment & Compliance</div>
+                    <div class="service-name" data-en="Security Assessment & Compliance" data-fr="Évaluation de Sécurité & Conformité">Security Assessment & Compliance</div>
                 </div>
                 <div class="service-item">
-                    <div class="service-name">Security Architecture</div>
+                    <div class="service-name" data-en="Security Architecture" data-fr="Architecture de Sécurité">Security Architecture</div>
                 </div>
                 <div class="service-item">
-                    <div class="service-name">AI & ML Deployment</div>
+                    <div class="service-name" data-en="AI & ML Deployment" data-fr="Déploiement IA & ML">AI & ML Deployment</div>
                 </div>
                 <div class="service-item">
-                    <div class="service-name">Cloud Migration Strategy</div>
+                    <div class="service-name" data-en="Cloud Migration Strategy" data-fr="Stratégie de Migration Cloud">Cloud Migration Strategy</div>
                 </div>
                 <div class="service-item">
-                    <div class="service-name">Application Development</div>
+                    <div class="service-name" data-en="Application Development" data-fr="Développement d'Applications">Application Development</div>
                 </div>
             </div>
         </div>
@@ -580,8 +613,8 @@
 
     <section class="about">
         <div class="about-content">
-            <h2 class="about-title">About</h2>
-            <p class="about-text">
+            <h2 class="about-title" data-en="About" data-fr="À Propos">About</h2>
+            <p class="about-text" data-en="Specializing in <strong>cloud architecture</strong>, <strong>cybersecurity</strong>, and <strong>software engineering</strong>. I help organizations build secure, scalable solutions that protect their infrastructure while enabling growth." data-fr="Spécialisé en <strong>architecture cloud</strong>, <strong>cybersécurité</strong> et <strong>ingénierie logicielle</strong>. J'aide les organisations à construire des solutions sécurisées et évolutives qui protègent leur infrastructure tout en favorisant la croissance.">
                 Specializing in <strong>cloud architecture</strong>, <strong>cybersecurity</strong>, and <strong>software engineering</strong>. 
                 I help organizations build secure, scalable solutions that protect their infrastructure while enabling growth.
             </p>
@@ -590,7 +623,7 @@
 
     <section id="contact" class="contact">
         <div class="contact-content">
-            <h2 class="contact-title">Let's Talk</h2>
+            <h2 class="contact-title" data-en="Get In Touch" data-fr="Contactez-Moi">Get In Touch</h2>
             <div class="contact-links">
                 <a href="mailto:contact@mehdiboukerdoune.com" class="contact-link">contact@mehdiboukerdoune.com</a>
                 <a href="https://ca.linkedin.com/in/mehdiboukerdoune" target="_blank" class="contact-link">LinkedIn</a>
@@ -603,6 +636,22 @@
     </footer>
 
     <script>
+        // Language Toggle
+        let currentLang = 'en';
+        const langToggle = document.getElementById('langToggle');
+
+        function switchLanguage() {
+            currentLang = currentLang === 'en' ? 'fr' : 'en';
+            langToggle.textContent = currentLang === 'en' ? 'FR' : 'EN';
+            
+            // Update all elements with language data attributes
+            document.querySelectorAll('[data-en][data-fr]').forEach(element => {
+                const text = element.getAttribute(`data-${currentLang}`);
+                element.innerHTML = text;
+            });
+        }
+
+        langToggle.addEventListener('click', switchLanguage);
         // Network Animation
         const canvas = document.getElementById('network-canvas');
         const ctx = canvas.getContext('2d');
@@ -621,6 +670,7 @@
                 this.vx = (Math.random() - 0.5) * 0.5;
                 this.vy = (Math.random() - 0.5) * 0.5;
                 this.radius = Math.random() * 2 + 1;
+                this.color = '#000';
             }
 
             update() {
@@ -634,7 +684,7 @@
             draw() {
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                ctx.fillStyle = '#000';
+                ctx.fillStyle = this.color;
                 ctx.fill();
             }
         }
@@ -643,7 +693,41 @@
             nodes.push(new Node());
         }
 
-        function drawConnections() {
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Determine current section color based on scroll
+            const scrollPos = window.scrollY;
+            const windowHeight = window.innerHeight;
+            const currentScroll = scrollPos + windowHeight / 2;
+            
+            let isBlackSection = false;
+            
+            // Check if we're in a black section
+            const servicesSection = document.querySelector('.services');
+            const contactSection = document.querySelector('.contact');
+            
+            if (servicesSection) {
+                const servicesTop = servicesSection.offsetTop;
+                const servicesBottom = servicesTop + servicesSection.offsetHeight;
+                if (currentScroll >= servicesTop && currentScroll <= servicesBottom) {
+                    isBlackSection = true;
+                }
+            }
+            
+            if (contactSection) {
+                const contactTop = contactSection.offsetTop;
+                const contactBottom = contactTop + contactSection.offsetHeight;
+                if (currentScroll >= contactTop && currentScroll <= contactBottom) {
+                    isBlackSection = true;
+                }
+            }
+            
+            // Set colors based on section
+            const strokeColor = isBlackSection ? 'rgba(255, 255, 255, ' : 'rgba(0, 0, 0, ';
+            const nodeColor = isBlackSection ? '#fff' : '#000';
+            
+            // Draw connections with appropriate color
             for (let i = 0; i < nodes.length; i++) {
                 for (let j = i + 1; j < nodes.length; j++) {
                     const dx = nodes[i].x - nodes[j].x;
@@ -652,7 +736,7 @@
 
                     if (distance < maxDistance) {
                         ctx.beginPath();
-                        ctx.strokeStyle = `rgba(0, 0, 0, ${0.8 - distance / maxDistance})`;
+                        ctx.strokeStyle = strokeColor + `${0.5 - distance / maxDistance})`;
                         ctx.lineWidth = 0.5;
                         ctx.moveTo(nodes[i].x, nodes[i].y);
                         ctx.lineTo(nodes[j].x, nodes[j].y);
@@ -660,15 +744,14 @@
                     }
                 }
             }
-        }
-
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            drawConnections();
+            
+            // Draw and update nodes
             nodes.forEach(node => {
+                node.color = nodeColor;
                 node.update();
                 node.draw();
             });
+
             requestAnimationFrame(animate);
         }
 
